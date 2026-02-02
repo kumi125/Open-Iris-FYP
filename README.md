@@ -54,11 +54,32 @@ The following preprocessing operations are applied to each iris image:
 
 This ensures all images have consistent format and quality for later stages.
 
----
-
 ### Script
 Preprocessing is implemented in:
 preprocess_iris.py
+
+
+## Stage 3 – Iris Segmentation ✅
+
+### Objective
+The objective of this stage is to isolate the iris region by detecting circular boundaries
+and removing non-iris areas such as eyelids and background.
+
+---
+
+### Method
+- Grayscale preprocessed images are used
+- Gaussian blur is applied for noise reduction
+- Circular Hough Transform is used to detect iris boundaries
+- A binary mask is generated to extract the iris region
+
+---
+
+### Script
+Segmentation is implemented in:
+python segment_iris.py
+
+---
 
 
 📂 **Folder Structure**
