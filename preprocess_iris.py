@@ -1,45 +1,71 @@
-import os
 import cv2
+import os
+import glob
 
-# Paths
-RAW_DATASET_PATH = "data/raw"
-PROCESSED_DATASET_PATH = "data/processed"
+def preprocess_latest():
 
-# Create processed folder if it doesn't exist
-os.makedirs(PROCESSED_DATASET_PATH, exist_ok=True)
+    capture_folder = "data/captured"
+    processed_folder = "data/processed"
+    os.makedirs(processed_folder, exist_ok=True)
 
-# Image size for standardization
-IMAGE_SIZE = (224, 224)
+    # Latest captured image
+    list_of_files = glob.glob(os.path.join(capture_folder, "*.jpg"))
 
-processed_count = 0
+    if len(list_of_files) == 0:
+        print("[ERROR] No captured images found!")
+        return None
 
-for root, dirs, files in os.walk(RAW_DATASET_PATH):
-    for file in files:
-        if file.lower().endswith(('.jpg', '.png', '.jpeg', '.bmp')):
-            raw_image_path = os.path.join(root, file)
+    latest_file = max(list_of_files, key=os.path.getctime)
+    image = cv2.imread(latest_file)
 
-            # Read image
-            image = cv2.imread(raw_image_path)
+    if image is None:
+        print("[ERROR] Failed to load image!")
+        return None
 
-            if image is None:
-                continue
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-            # Convert to grayscale
-            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    # Improved eye detection
+    eye_cascade = cv2.CascadeClassifier(
+        cv2.data.haarcascades + "haarcascade_eye.xml"
+    )
 
-            # Resize image
-            resized = cv2.resize(gray, IMAGE_SIZE)
+    eyes = eye_cascade.detectMultiScale(
+        gray,
+        scaleFactor=1.2,
+        minNeighbors=8,
+        minSize=(80, 80)
+    )
 
-            # Noise reduction
-            blurred = cv2.GaussianBlur(resized, (5, 5), 0)
+    if len(eyes) == 0:
+        print("[ERROR] No eyes detected!")
+        return None
 
-            # Save processed image
-            save_path = os.path.join(
-                PROCESSED_DATASET_PATH,
-                f"processed_{processed_count}.png"
-            )
+    # Sort eyes by size (pick largest)
+    eyes = sorted(eyes, key=lambda x: x[2]*x[3], reverse=True)
+    (x, y, w, h) = eyes[0]
 
-            cv2.imwrite(save_path, blurred)
-            processed_count += 1
+    eye_roi = gray[y:y+h, x:x+w]
 
-print(f"[INFO] Preprocessing completed. Total images processed: {processed_count}")
+    # Resize + blur
+    resized = cv2.resize(eye_roi, (224, 224))
+    blurred = cv2.GaussianBlur(resized, (5, 5), 0)
+
+    # Save (no overwrite)
+    existing_files = [f for f in os.listdir(processed_folder) if f.endswith(".png")]
+    count = len(existing_files)
+
+    filename = f"processed_{count}.png"
+    processed_path = os.path.join(processed_folder, filename)
+
+    cv2.imwrite(processed_path, blurred)
+
+    print(f"[INFO] Preprocessed image saved as: {processed_path}")
+
+    # Display (optional)
+    if __name__ == "__main__":
+        cv2.imshow("Detected Eye Region", eye_roi)
+        cv2.imshow("Preprocessed Eye", blurred)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+
+    return processed_path

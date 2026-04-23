@@ -1,4 +1,9 @@
 import cv2
+import os
+
+# Create folder for captured images
+capture_folder = "data/captured"
+os.makedirs(capture_folder, exist_ok=True)
 
 cap = cv2.VideoCapture(0)
 
@@ -15,8 +20,15 @@ while True:
     key = cv2.waitKey(1) & 0xFF
 
     if key == ord('s'):
-        cv2.imwrite("iris_sample.jpg", frame)
-        print("Image saved as iris_sample.jpg")
+        # 🔥 Generate unique filename (no overwrite)
+        existing_files = [f for f in os.listdir(capture_folder) if f.endswith(".jpg")]
+        count = len(existing_files)
+
+        filename = f"captured_{count}.jpg"
+        save_path = os.path.join(capture_folder, filename)
+
+        cv2.imwrite(save_path, frame)
+        print(f"[INFO] Image saved as {save_path}")
 
     elif key == ord('q'):
         break

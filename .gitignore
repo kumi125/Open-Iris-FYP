@@ -1,6 +1,5 @@
 __pycache__/
 *.pyc
-
-# Ignore datasets
-data/raw/
+data/captured/
 data/processed/
+data/temp_login/

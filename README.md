@@ -1,93 +1,57 @@
-# 🟢 Open-Iris-FYP
+# Iris Recognition System 👁️
 
-### Stage 1 – Camera & Image Capture ✅
+## 📌 Project Overview
 
-**Project Status:** Stage 1 complete | Stage 2 ⬜  
-
----
-
-## 📌 Project Summary
-Open-Iris-FYP is a Final Year Project that captures **iris images using a webcam** to test hardware and OpenCV feasibility. Stage 1 proves that the system works and is ready for further iris recognition development.
+This project implements an iris recognition system using image processing and machine learning techniques. It captures an eye image, preprocesses it, segments the iris, extracts features, and performs user authentication.
 
 ---
 
-## ⚡ Key Features (Stage 1)
-- Open webcam and live video stream  
-- Capture iris images  
-- Save captured images to disk  
-- Hardware & OpenCV integration verified  
+## ⚙️ Features
+
+* Iris image capture using webcam
+* Eye detection and preprocessing
+* Iris segmentation using Hough Circle Transform
+* Feature extraction (LBP + Edge + Intensity)
+* User registration & login system
+* Accuracy evaluation (FAR & FRR)
+* GUI-based interface
 
 ---
 
-## 🏃‍♂️ Quick Start
+## 🧠 Technologies Used
+
+* Python
+* OpenCV
+* NumPy
+* Scikit-image
+* Tkinter
+
+---
+
+## 🚀 How to Run
+
+### Run GUI:
+
 ```bash
-# Install dependencies
-pip install -r requirements.txt
+python gui_app.py
+```
 
-# Run Stage 1 script
-python test_camera.py
+### Run CLI:
 
-## Stage 2 – Dataset Preparation & Preprocessing ✅
-
-### Objective
-The goal of Stage 2 is to prepare a standardized iris image dataset suitable for feature extraction and recognition.  
-Raw iris images often vary in size, lighting, and noise, so preprocessing is required to normalize them.
+```bash
+python main.py
+```
 
 ---
 
-### Dataset
-- Public iris dataset (e.g., MMU / public iris dataset)
-- Dataset is stored locally and **excluded from GitHub using `.gitignore`**
-- Folder structure:
+## 📊 Evaluation Metrics
 
-
----
-
-### Preprocessing Steps Implemented
-The following preprocessing operations are applied to each iris image:
-
-1. Image loading from dataset directory  
-2. Conversion to grayscale  
-3. Image resizing to a fixed resolution (224 × 224)  
-4. Noise reduction using Gaussian blur  
-5. Saving the processed images to a separate directory  
-
-This ensures all images have consistent format and quality for later stages.
-
-### Script
-Preprocessing is implemented in:
-preprocess_iris.py
-
-
-## Stage 3 – Iris Segmentation ✅
-
-### Objective
-The objective of this stage is to isolate the iris region by detecting circular boundaries
-and removing non-iris areas such as eyelids and background.
+* FAR (False Acceptance Rate)
+* FRR (False Rejection Rate)
 
 ---
 
-### Method
-- Grayscale preprocessed images are used
-- Gaussian blur is applied for noise reduction
-- Circular Hough Transform is used to detect iris boundaries
-- A binary mask is generated to extract the iris region
+## 👨‍💻 Authors
 
----
-
-### Script
-Segmentation is implemented in:
-python segment_iris.py
-
----
-
-
-📂 **Folder Structure**
-Open-Iris-FYP/
-├── test_camera.py
-data/
-├── raw/ # Original iris images
-├── processed/ # Preprocessed iris images
-├── README.md
-├── .gitignore
-├── iris-sample/
+* Kumail Hussain
+* M.Ghazanfar
