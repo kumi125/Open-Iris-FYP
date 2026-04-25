@@ -54,4 +54,4 @@ python main.py
 ## 👨‍💻 Authors
 
 * Kumail Hussain
-* M.Ghazanfar
+* Muhammad Ghazanfar Hussain
