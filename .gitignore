@@ -1,0 +1,30 @@
+# Python Bytecode & Cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environment & IDE Configuration
+.venv/
+env/
+venv/
+ENV/
+.vscode/
+.idea/
+
+# Biometric & Image Captures (Keep folders clean)
+data/captured/*
+data/processed/*
+data/temp_login/*
+!data/**/.gitkeep
+
+# Operating System Files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Security & Secret Key
+secret.key
+
+# Segmented image backups
+data/segmented/*
